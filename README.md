@@ -169,7 +169,10 @@ WFDB 레코드여야 하며 `.hea` 또는 `.dat` 확장자는 생략할 수 있�
 
 웹 화면에서는 `.hea` 파일 1개와 해당 헤더가 참조하는 `.dat` 파일을 함께
 업로드합니다. 100Hz, 10초, 표준 12유도 순서와 파일 참조를 분석 전에
-검사하며 업로드 파일은 임시 폴더에서만 처리합니다.
+검사하며 업로드 파일은 임시 폴더에서만 처리합니다. 실제 환자 파일은 허용하지
+않으며 공개되었거나 적절하게 비식별 처리된 연구 데이터만 사용할 수 있습니다.
+처리 범위와 삭제 방식은
+[`DATA_HANDLING_POLICY.md`](DATA_HANDLING_POLICY.md)에 기록했습니다.
 
 ```powershell
 $env:ECG_GUARD_CHECKPOINT="outputs/baseline/best_model.pt"
@@ -180,6 +183,14 @@ $env:ECG_GUARD_DEMO_RECORD="data/raw/ptb-xl/records100/00000/00001_lr"
 `ECG_GUARD_DEMO_RECORD`는 로컬 시연용 선택 설정입니다. 사용법과 공개 배포 전
 확인사항은 [`docs/web_demo.md`](docs/web_demo.md)에 기록했습니다. 현재
 체크포인트를 공개 배포하지 않았으므로 웹 앱도 로컬 연구 데모 단계입니다.
+
+동결 체크포인트의 공개 패키지를 만들고 GitHub Release에서 검증하는 절차는
+[`docs/model_release.md`](docs/model_release.md)에 기록했습니다. 실제 Release
+게시 전에는 명세서에 예정 URL을 공개 URL처럼 기재하지 않습니다.
+
+CPU 전용 Docker 이미지와 로컬 전용 Compose 실행, 컨테이너 SBOM 추출 및
+인터넷 공개 전 조건은 [`docs/deployment.md`](docs/deployment.md)에
+기록했습니다. 기본 포트는 안전하게 `127.0.0.1`에만 바인딩합니다.
 
 파이프라인만 빠르게 검증할 때는 다음처럼 제한된 표본으로 실행합니다.
 

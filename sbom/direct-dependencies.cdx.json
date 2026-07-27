@@ -1,0 +1,345 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.6",
+  "serialNumber": "urn:uuid:c6c31fb9-6e5f-5a01-b5fe-a8651fcae00e",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2026-07-27T08:11:44.664300+00:00",
+    "tools": {
+      "components": [
+        {
+          "type": "application",
+          "name": "ecg-guard-sbom-generator",
+          "version": "1.0"
+        }
+      ]
+    },
+    "component": {
+      "type": "application",
+      "bom-ref": "pkg:pypi/ecg-guard@0.1.0",
+      "name": "ecg-guard",
+      "version": "0.1.0",
+      "purl": "pkg:pypi/ecg-guard@0.1.0",
+      "licenses": [
+        {
+          "expression": "Apache-2.0"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "website",
+          "url": "https://github.com/yuraira/ecg-guard"
+        },
+        {
+          "type": "vcs",
+          "url": "https://github.com/yuraira/ecg-guard"
+        },
+        {
+          "type": "website",
+          "url": "https://github.com/yuraira/ecg-guard/issues"
+        }
+      ]
+    },
+    "properties": [
+      {
+        "name": "ecg-guard:dependency-scope",
+        "value": "direct"
+      }
+    ]
+  },
+  "components": [
+    {
+      "type": "library",
+      "bom-ref": "pkg:pypi/matplotlib@3.11.1",
+      "name": "matplotlib",
+      "version": "3.11.1",
+      "purl": "pkg:pypi/matplotlib@3.11.1",
+      "licenses": [
+        {
+          "expression": "PSF-2.0"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "website",
+          "url": "https://matplotlib.org"
+        },
+        {
+          "type": "website",
+          "url": "https://matplotlib.org/stable/install/index.html"
+        },
+        {
+          "type": "website",
+          "url": "https://matplotlib.org"
+        },
+        {
+          "type": "vcs",
+          "url": "https://github.com/matplotlib/matplotlib"
+        },
+        {
+          "type": "website",
+          "url": "https://github.com/matplotlib/matplotlib/issues"
+        },
+        {
+          "type": "website",
+          "url": "https://discourse.matplotlib.org/"
+        },
+        {
+          "type": "website",
+          "url": "https://numfocus.org/donate-to-matplotlib"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:pypi/numpy@2.5.1",
+      "name": "numpy",
+      "version": "2.5.1",
+      "purl": "pkg:pypi/numpy@2.5.1",
+      "licenses": [
+        {
+          "expression": "BSD-3-Clause AND 0BSD AND MIT AND Zlib AND CC0-1.0"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "website",
+          "url": "https://numpy.org"
+        },
+        {
+          "type": "website",
+          "url": "https://numpy.org/doc/"
+        },
+        {
+          "type": "vcs",
+          "url": "https://github.com/numpy/numpy"
+        },
+        {
+          "type": "website",
+          "url": "https://pypi.org/project/numpy/#files"
+        },
+        {
+          "type": "website",
+          "url": "https://github.com/numpy/numpy/issues"
+        },
+        {
+          "type": "website",
+          "url": "https://numpy.org/doc/stable/release"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:pypi/pandas@3.0.5",
+      "name": "pandas",
+      "version": "3.0.5",
+      "purl": "pkg:pypi/pandas@3.0.5",
+      "licenses": [
+        {
+          "expression": "BSD-3-Clause"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "website",
+          "url": "https://pandas.pydata.org"
+        },
+        {
+          "type": "website",
+          "url": "https://pandas.pydata.org/docs/"
+        },
+        {
+          "type": "vcs",
+          "url": "https://github.com/pandas-dev/pandas"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:pypi/scikit-learn@1.9.0",
+      "name": "scikit-learn",
+      "version": "1.9.0",
+      "purl": "pkg:pypi/scikit-learn@1.9.0",
+      "licenses": [
+        {
+          "expression": "BSD-3-Clause"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "website",
+          "url": "https://scikit-learn.org"
+        },
+        {
+          "type": "vcs",
+          "url": "https://github.com/scikit-learn/scikit-learn"
+        },
+        {
+          "type": "website",
+          "url": "https://pypi.org/project/scikit-learn/#files"
+        },
+        {
+          "type": "website",
+          "url": "https://github.com/scikit-learn/scikit-learn/issues"
+        },
+        {
+          "type": "website",
+          "url": "https://scikit-learn.org/stable/whats_new"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:pypi/streamlit@1.60.0",
+      "name": "streamlit",
+      "version": "1.60.0",
+      "purl": "pkg:pypi/streamlit@1.60.0",
+      "licenses": [
+        {
+          "expression": "Apache-2.0"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "website",
+          "url": "https://streamlit.io"
+        },
+        {
+          "type": "website",
+          "url": "https://docs.streamlit.io/"
+        },
+        {
+          "type": "vcs",
+          "url": "https://github.com/streamlit/streamlit"
+        },
+        {
+          "type": "website",
+          "url": "https://github.com/streamlit/streamlit/issues"
+        },
+        {
+          "type": "website",
+          "url": "https://docs.streamlit.io/develop/quick-reference/changelog"
+        },
+        {
+          "type": "website",
+          "url": "https://discuss.streamlit.io/"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:pypi/torch@2.12.1%2Bcu130",
+      "name": "torch",
+      "version": "2.12.1+cu130",
+      "purl": "pkg:pypi/torch@2.12.1%2Bcu130",
+      "licenses": [
+        {
+          "expression": "BSD-3-Clause"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "website",
+          "url": "https://pytorch.org"
+        },
+        {
+          "type": "vcs",
+          "url": "https://github.com/pytorch/pytorch"
+        },
+        {
+          "type": "website",
+          "url": "https://pytorch.org/docs"
+        },
+        {
+          "type": "website",
+          "url": "https://github.com/pytorch/pytorch/issues"
+        },
+        {
+          "type": "website",
+          "url": "https://discuss.pytorch.org"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:pypi/wfdb@4.3.1",
+      "name": "wfdb",
+      "version": "4.3.1",
+      "purl": "pkg:pypi/wfdb@4.3.1",
+      "licenses": [
+        {
+          "expression": "MIT"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "website",
+          "url": "https://github.com/MIT-LCP/wfdb-python/"
+        },
+        {
+          "type": "vcs",
+          "url": "https://github.com/MIT-LCP/wfdb-python/"
+        },
+        {
+          "type": "website",
+          "url": "https://wfdb.readthedocs.io/"
+        }
+      ]
+    }
+  ],
+  "dependencies": [
+    {
+      "ref": "pkg:pypi/ecg-guard@0.1.0",
+      "dependsOn": [
+        "pkg:pypi/matplotlib@3.11.1",
+        "pkg:pypi/numpy@2.5.1",
+        "pkg:pypi/pandas@3.0.5",
+        "pkg:pypi/scikit-learn@1.9.0",
+        "pkg:pypi/streamlit@1.60.0",
+        "pkg:pypi/torch@2.12.1%2Bcu130",
+        "pkg:pypi/wfdb@4.3.1"
+      ]
+    },
+    {
+      "ref": "pkg:pypi/matplotlib@3.11.1",
+      "dependsOn": [
+        "pkg:pypi/numpy@2.5.1"
+      ]
+    },
+    {
+      "ref": "pkg:pypi/numpy@2.5.1",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:pypi/pandas@3.0.5",
+      "dependsOn": [
+        "pkg:pypi/numpy@2.5.1"
+      ]
+    },
+    {
+      "ref": "pkg:pypi/scikit-learn@1.9.0",
+      "dependsOn": [
+        "pkg:pypi/numpy@2.5.1"
+      ]
+    },
+    {
+      "ref": "pkg:pypi/streamlit@1.60.0",
+      "dependsOn": [
+        "pkg:pypi/numpy@2.5.1",
+        "pkg:pypi/pandas@3.0.5"
+      ]
+    },
+    {
+      "ref": "pkg:pypi/torch@2.12.1%2Bcu130",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:pypi/wfdb@4.3.1",
+      "dependsOn": [
+        "pkg:pypi/matplotlib@3.11.1",
+        "pkg:pypi/numpy@2.5.1",
+        "pkg:pypi/pandas@3.0.5"
+      ]
+    }
+  ]
+}

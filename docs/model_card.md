@@ -11,6 +11,13 @@
 - 체크포인트 SHA-256:
   `44A8ECC96F1AC084DB2EF6921BF8E438C1130DA6BE140D7FC3AC7FE3ECFA2EAD`
 
+## 배포 상태
+
+체크포인트의 공개 패키지는 모델 카드, 잠긴 추론 프로토콜, 체크섬, SBOM,
+Apache-2.0 라이선스 및 PTB-XL 고지와 함께 GitHub Release로 게시한다.
+게시 전 준비와 검증 절차는 `docs/model_release.md`에 기록한다. 공개 Release가
+생성되기 전에는 저장소의 학습 절차로만 체크포인트를 재현할 수 있다.
+
 ## 허용된 사용
 
 - 공개 ECG 데이터의 연구·교육용 분석

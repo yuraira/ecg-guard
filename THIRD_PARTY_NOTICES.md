@@ -23,6 +23,13 @@ ECG Guard의 Apache-2.0 라이선스는 PTB-XL 데이터의 CC BY 4.0 조건을
 `requirements-dev.txt`에 기록합니다. 각 패키지는 해당 프로젝트가 정한
 개별 라이선스를 따릅니다.
 
+직접 의존성의 버전·공식 저장소·사용 목적은 [`docs/sbom.md`](docs/sbom.md),
+기계 판독 정보는 `sbom/direct-dependencies.cdx.json`에 기록합니다. 실제
+Docker 실행 이미지의 Python 전이 의존성은 빌드 중
+`/app/sbom/python-runtime.cdx.json`으로 생성합니다. Debian 운영체제
+패키지까지 포함한 최종 이미지 SBOM은 고정 버전 Syft로 완성 이미지를
+스캔해 `sbom/container-runtime.cdx.json`으로 추출합니다.
+
 웹 데모는 Apache License 2.0으로 배포되는 Streamlit을 사용합니다.
 
 - 버전: 1.60.0

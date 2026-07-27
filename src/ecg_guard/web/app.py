@@ -37,6 +37,14 @@ DEFAULT_CHECKPOINT_PATH = Path(
     )
 )
 DEMO_RECORD_PATH = os.environ.get("ECG_GUARD_DEMO_RECORD")
+DATA_POLICY_URL = (
+    "https://github.com/yuraira/ecg-guard/blob/main/"
+    "DATA_HANDLING_POLICY.md"
+)
+UPLOAD_CONFIRMATION = (
+    "업로드 파일이 공개되었거나 적절하게 비식별 처리된 연구 데이터이며, "
+    "실제 환자의 진료·진단·치료 목적으로 사용하지 않음을 확인합니다."
+)
 
 
 @st.cache_resource(show_spinner=False)
@@ -90,6 +98,13 @@ def analyze_waveform(waveform: Any, record_id: str) -> dict[str, Any]:
         "protocol_file": DEFAULT_PROTOCOL_PATH.name,
     }
     return report
+
+
+def clear_session_analysis() -> None:
+    """Remove analyzed data and reset the uploader widget for this session."""
+    st.session_state.pop("analysis", None)
+    generation = int(st.session_state.get("upload_generation", 0))
+    st.session_state["upload_generation"] = generation + 1
 
 
 def render_result(report: dict[str, Any], waveform: Any) -> None:
@@ -249,16 +264,33 @@ def main() -> None:
             "동일 레코드의 .hea 파일 1개와 헤더가 참조하는 .dat 파일을 "
             "함께 선택하세요. 최대 전체 50MB입니다."
         )
+        st.info(
+            "실제 환자 파일은 업로드할 수 없습니다. 공개되었거나 적절하게 "
+            "비식별 처리된 연구 데이터만 사용하세요."
+        )
+        st.markdown(f"[데모 데이터 처리 정책 전문]({DATA_POLICY_URL})")
+        upload_generation = int(
+            st.session_state.get("upload_generation", 0)
+        )
+        policy_confirmed = st.checkbox(
+            UPLOAD_CONFIRMATION,
+            key=f"upload-policy-confirmed-{upload_generation}",
+        )
         uploaded_files = st.file_uploader(
             "WFDB 파일 선택",
             type=["hea", "dat"],
             accept_multiple_files=True,
             help="표준 12유도, 100Hz, 유도당 1,000표본만 지원합니다.",
+            key=f"wfdb-upload-{upload_generation}",
         )
         if st.button(
             "업로드 ECG 분석",
             type="primary",
-            disabled=not uploaded_files or not checkpoint_ready,
+            disabled=(
+                not uploaded_files
+                or not checkpoint_ready
+                or not policy_confirmed
+            ),
             width="stretch",
         ):
             try:
@@ -274,11 +306,18 @@ def main() -> None:
                             header.stem,
                             header.parent,
                         )
-                        report = analyze_waveform(waveform, header.stem)
+                        report = analyze_waveform(
+                            waveform,
+                            "uploaded-record",
+                        )
                 st.session_state["analysis"] = {
                     "report": report,
                     "waveform": waveform,
                 }
+                st.session_state["upload_generation"] = (
+                    upload_generation + 1
+                )
+                st.rerun()
             except (ValueError, FileNotFoundError, RuntimeError) as error:
                 st.error(str(error))
 
@@ -322,6 +361,12 @@ def main() -> None:
         st.divider()
         st.header("분석 결과")
         render_result(analysis["report"], analysis["waveform"])
+        st.button(
+            "세션의 분석 결과 삭제",
+            on_click=clear_session_analysis,
+            width="stretch",
+            help="메모리에 유지 중인 파형과 분석 결과를 현재 세션에서 제거합니다.",
+        )
     elif not checkpoint_ready:
         st.info(
             "먼저 README의 학습 절차로 baseline v1 체크포인트를 준비하거나 "

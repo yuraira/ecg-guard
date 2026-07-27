@@ -226,4 +226,8 @@ __marimo__/
 /outputs/
 *.pt
 *.pth
+
+# Locally generated full runtime SBOMs and release staging directories
+/sbom/runtime-*.cdx.json
+/sbom/container-runtime.provenance.local.json
 .env
