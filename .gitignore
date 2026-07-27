@@ -216,3 +216,12 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# ECG Guard data and model artifacts
+data/
+models/
+checkpoints/
+outputs/
+*.pt
+*.pth
+.env
