@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+message: "ECG Guard를 사용한 경우 이 소프트웨어와 PTB-XL 원 논문을 함께 인용해 주세요."
+title: "ECG Guard"
+type: software
+authors:
+  - family-names: "유라"
+version: 0.1.0
+date-released: 2026-07-27
+repository-code: "https://github.com/yuraira/ecg-guard"
+url: "https://github.com/yuraira/ecg-guard"
+license: Apache-2.0
+keywords:
+  - electrocardiography
+  - medical-ai
+  - uncertainty
+  - signal-quality
+  - ptb-xl

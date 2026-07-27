@@ -1,0 +1,1 @@
+"""ECG Guard package."""

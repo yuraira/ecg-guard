@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=70"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ecg-guard"
+version = "0.1.0"
+description = "신뢰도 기반 심전도 인공지능 평가 플랫폼"
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+license = "Apache-2.0"
+authors = [
+    {name = "유라"},
+]
+dependencies = [
+    "matplotlib==3.11.1",
+    "numpy==2.5.1",
+    "pandas==3.0.5",
+    "scikit-learn==1.9.0",
+    "torch==2.12.1",
+    "wfdb==4.3.1",
+]
+
+[project.urls]
+Homepage = "https://github.com/yuraira/ecg-guard"
+Repository = "https://github.com/yuraira/ecg-guard"
+Issues = "https://github.com/yuraira/ecg-guard/issues"
+
+[project.optional-dependencies]
+dev = [
+    "pytest==9.1.1",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
