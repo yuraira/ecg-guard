@@ -82,10 +82,10 @@ v1의 사후 기술 분석으로 구분합니다. 이 결과를 바탕으로 분
 - 낮은 품질·낮은 신뢰도에서 판정 보류 또는 재검토 권고
 - 모델 버전과 입력 요구사항
 
-이 계약은 `src/ecg_guard/resources/baseline_v1_inference.json`과
-`ecg_guard.inference.predict_record`에 구현했다. 추론 시 체크포인트
-SHA-256을 확인하며, 클래스별 보정 확률·임계값과 기술 품질·불확실성 검토
-사유를 분리해 반환한다.
+이 계약은 `src/ecg_guard/resources/baseline_v1_inference.json`,
+`ecg_guard.inference.predict_record`와 `ecg_guard.web.app`에 구현했다.
+CLI와 웹 데모 모두 추론 시 체크포인트 SHA-256을 확인하며, 클래스별 보정
+확률·임계값과 기술 품질·불확실성 검토 사유를 분리해 반환한다.
 
 ## 신뢰도 보조 분석
 

@@ -17,6 +17,7 @@ dependencies = [
     "numpy==2.5.1",
     "pandas==3.0.5",
     "scikit-learn==1.9.0",
+    "streamlit==1.60.0",
     "torch==2.12.1",
     "wfdb==4.3.1",
 ]
@@ -28,6 +29,7 @@ Issues = "https://github.com/yuraira/ecg-guard/issues"
 
 [project.scripts]
 ecg-guard-predict = "ecg_guard.inference.predict_record:main"
+ecg-guard-web = "ecg_guard.web.launcher:main"
 
 [project.optional-dependencies]
 dev = [

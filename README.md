@@ -20,6 +20,7 @@
 - 학습 분포 기준의 설명 가능한 파형 기술 품질 지표
 - 예측 경계 uncertainty와 validation-locked 선택적 판정 분석
 - 체크포인트 무결성 검증과 검토 사유를 포함한 단일 기록 추론 CLI
+- 안전한 WFDB 업로드와 결과 시각화를 제공하는 Streamlit 웹 데모
 
 ## 모델링 정책
 
@@ -163,6 +164,22 @@ WFDB 레코드여야 하며 `.hea` 또는 `.dat` 확장자는 생략할 수 있�
 기술 품질은 자동 입력 폐기 기준이 아니며, uncertainty cutoff 역시 임상적으로
 승인된 운영점이 아닙니다. 체크포인트는 데이터와 같은 이유로 저장소에 포함하지
 않으며 위 학습 명령으로 재현할 수 있습니다.
+
+## 웹 데모
+
+웹 화면에서는 `.hea` 파일 1개와 해당 헤더가 참조하는 `.dat` 파일을 함께
+업로드합니다. 100Hz, 10초, 표준 12유도 순서와 파일 참조를 분석 전에
+검사하며 업로드 파일은 임시 폴더에서만 처리합니다.
+
+```powershell
+$env:ECG_GUARD_CHECKPOINT="outputs/baseline/best_model.pt"
+$env:ECG_GUARD_DEMO_RECORD="data/raw/ptb-xl/records100/00000/00001_lr"
+.\.venv\Scripts\ecg-guard-web.exe
+```
+
+`ECG_GUARD_DEMO_RECORD`는 로컬 시연용 선택 설정입니다. 사용법과 공개 배포 전
+확인사항은 [`docs/web_demo.md`](docs/web_demo.md)에 기록했습니다. 현재
+체크포인트를 공개 배포하지 않았으므로 웹 앱도 로컬 연구 데모 단계입니다.
 
 파이프라인만 빠르게 검증할 때는 다음처럼 제한된 표본으로 실행합니다.
 
