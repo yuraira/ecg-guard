@@ -19,6 +19,7 @@
 - 다중 라벨 residual 1D CNN 기준 모델과 재현 가능한 학습 CLI
 - 학습 분포 기준의 설명 가능한 파형 기술 품질 지표
 - 예측 경계 uncertainty와 validation-locked 선택적 판정 분석
+- 체크포인트 무결성 검증과 검토 사유를 포함한 단일 기록 추론 CLI
 
 ## 모델링 정책
 
@@ -141,6 +142,27 @@ epistemic uncertainty로 해석하지 않습니다. 자세한 규칙은
 80% 목표 cutoff의 시험 실제 coverage는 77.4%였고 Hamming 오류율은 전체
 0.1504에서 0.1270으로 감소했습니다. 이는 선택된 하위집단의 trade-off이며
 모델 자체의 성능 향상이나 임상적 안전성을 뜻하지 않습니다.
+
+## 단일 기록 추론
+
+동결된 baseline v1 체크포인트와
+[`baseline_v1_inference.json`](src/ecg_guard/resources/baseline_v1_inference.json)의
+해시가 일치할 때만 추론합니다. 입력은 100 Hz, 10초, mV 단위의 표준 12유도
+WFDB 레코드여야 하며 `.hea` 또는 `.dat` 확장자는 생략할 수 있습니다.
+
+```powershell
+.\.venv\Scripts\python.exe -m ecg_guard.inference.predict_record `
+  --record .\data\raw\ptb-xl\records100\00000\00001_lr `
+  --checkpoint .\outputs\baseline\best_model.pt `
+  --output .\outputs\inference\00001.json
+```
+
+결과 JSON은 클래스별 보정 확률·잠긴 임계값뿐 아니라 기술 품질 상태,
+결정 경계 불확실성, `auto_result`, `review_uncertain`,
+`review_technical`, `review_both` 중 하나의 검토 라우팅을 함께 제공합니다.
+기술 품질은 자동 입력 폐기 기준이 아니며, uncertainty cutoff 역시 임상적으로
+승인된 운영점이 아닙니다. 체크포인트는 데이터와 같은 이유로 저장소에 포함하지
+않으며 위 학습 명령으로 재현할 수 있습니다.
 
 파이프라인만 빠르게 검증할 때는 다음처럼 제한된 표본으로 실행합니다.
 

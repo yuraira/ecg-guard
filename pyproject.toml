@@ -26,6 +26,9 @@ Homepage = "https://github.com/yuraira/ecg-guard"
 Repository = "https://github.com/yuraira/ecg-guard"
 Issues = "https://github.com/yuraira/ecg-guard/issues"
 
+[project.scripts]
+ecg-guard-predict = "ecg_guard.inference.predict_record:main"
+
 [project.optional-dependencies]
 dev = [
     "pytest==9.1.1",
@@ -36,3 +39,6 @@ testpaths = ["tests"]
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools.package-data]
+"ecg_guard.resources" = ["*.json"]

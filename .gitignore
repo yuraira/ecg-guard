@@ -218,10 +218,12 @@ __marimo__/
 .streamlit/secrets.toml
 
 # ECG Guard data and model artifacts
-data/
-models/
-checkpoints/
-outputs/
+# Keep these rules rooted so package directories such as
+# src/ecg_guard/data and src/ecg_guard/models remain trackable.
+/data/
+/models/
+/checkpoints/
+/outputs/
 *.pt
 *.pth
 .env
