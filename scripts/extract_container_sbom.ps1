@@ -2,7 +2,7 @@
 param(
     [string]$Image = "ecg-guard:baseline-v1",
     [string]$Output = "sbom/container-runtime.cdx.json",
-    [string]$SyftImage = "anchore/syft:v1.49.0"
+    [string]$SyftImage = "anchore/syft:v1.49.0@sha256:13b53ebabe3d215268c90cf8fb9b875f0183908245f376fd4b3a2cb69d21d484"
 )
 
 $ErrorActionPreference = "Stop"

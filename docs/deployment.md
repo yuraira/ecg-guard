@@ -51,8 +51,8 @@ Docker 빌드는 CPU 실행 환경에 실제 설치된 Python 전이 의존성�
 .\scripts\extract_container_sbom.ps1
 ```
 
-이 스크립트는 Syft `v1.49.0` 컨테이너로 실제 완성 이미지를 스캔해 Python과
-Debian 패키지가 모두 존재하는 CycloneDX JSON만 허용한다. 결과는
+이 스크립트는 digest로 고정한 Syft `v1.49.0` 컨테이너로 실제 완성 이미지를
+스캔해 Python과 Debian 패키지가 모두 존재하는 CycloneDX JSON만 허용한다. 결과는
 `sbom/container-runtime.cdx.json`, 이미지 ID·Syft 이미지 digest·SBOM 해시는
 무시된 로컬 검증 파일 `sbom/container-runtime.provenance.local.json`에
 기록한다.
@@ -86,6 +86,7 @@ Debian 패키지가 모두 존재하는 CycloneDX JSON만 허용한다. 결과�
 이 조건은 연구용 공개 데모의 최소 운영 기준이다. 실제 환자 의료정보나 의료적
 의사결정을 처리할 수 있는 인증·법적 동의·임상 검증 체계를 의미하지 않는다.
 
-현재 `Dockerfile`의 `python:3.12-slim`은 유지보수되는 이동 태그다. 최종
-배포 후보를 검증한 뒤에는 해당 빌드가 사용한 base image digest와 완성 이미지
-digest를 배포 기록에 고정해야 한다.
+`Dockerfile`의 Python base image, Syft 검사기와 Python 전이 의존성은 각각
+digest 또는 exact version으로 고정한다. `requirements-container.lock`은 CPU
+배포 이미지에서 검증한 전이 의존성 집합이며, 직접 의존성 변경 시 실제 이미지
+재빌드·테스트·SBOM 추출과 함께 갱신한다.

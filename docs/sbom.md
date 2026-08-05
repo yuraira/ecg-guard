@@ -55,6 +55,8 @@ Python 의존성을 다시 조사해 `/app/sbom/python-runtime.cdx.json`을 생�
 .\scripts\extract_container_sbom.ps1
 ```
 
-스크립트는 고정된 Syft `v1.49.0` 이미지를 사용하고, 결과에 PyPI와 Debian
-패키지가 모두 있는지 검증한다. Docker image ID, Syft image digest와 SBOM
-SHA-256은 별도의 로컬 provenance 파일에 남긴다.
+스크립트는 digest로 고정된 Syft `v1.49.0` 이미지를 사용하고, 결과에 PyPI와
+Debian 패키지가 모두 있는지 검증한다. Docker image ID, Syft image digest와
+SBOM SHA-256은 별도의 로컬 provenance 파일에 남긴다. Python 전이 버전은
+`requirements-container.lock`에도 고정해 SBOM이 단순한 사후 목록에 그치지
+않도록 한다.
