@@ -44,6 +44,39 @@ QUALITY_FLAG_LABELS_KO = {
 }
 
 
+def create_synthetic_demo_waveform() -> np.ndarray:
+    """Create a deterministic non-clinical waveform for UI demonstrations."""
+    time = np.arange(EXPECTED_SAMPLES, dtype=np.float64) / 100.0
+    phase = np.mod(time, 1.0)
+    heartbeat = (
+        0.10 * np.exp(-((phase - 0.16) / 0.045) ** 2)
+        - 0.14 * np.exp(-((phase - 0.285) / 0.014) ** 2)
+        + 1.00 * np.exp(-((phase - 0.31) / 0.012) ** 2)
+        - 0.24 * np.exp(-((phase - 0.345) / 0.016) ** 2)
+        + 0.25 * np.exp(-((phase - 0.58) / 0.09) ** 2)
+    )
+    baseline = 0.015 * np.sin(2 * np.pi * 0.2 * time)
+    lead_scales = np.asarray(
+        [
+            0.72,
+            1.0,
+            0.66,
+            -0.82,
+            0.38,
+            0.84,
+            -0.42,
+            0.34,
+            0.78,
+            1.0,
+            0.88,
+            0.70,
+        ],
+        dtype=np.float64,
+    )
+    waveform = lead_scales[:, None] * heartbeat[None, :] + baseline[None, :]
+    return waveform.astype(np.float32)
+
+
 class UploadedFileLike(Protocol):
     """Minimal interface shared by Streamlit uploads and unit-test doubles."""
 

@@ -24,6 +24,7 @@ from ecg_guard.web.presentation import (
     ACTION_LABELS_KO,
     create_ecg_figure,
     create_probability_figure,
+    create_synthetic_demo_waveform,
     prediction_table,
     quality_flag_text,
     save_uploaded_record,
@@ -37,6 +38,10 @@ DEFAULT_CHECKPOINT_PATH = Path(
     )
 )
 DEMO_RECORD_PATH = os.environ.get("ECG_GUARD_DEMO_RECORD")
+SYNTHETIC_DEMO_ENABLED = os.environ.get(
+    "ECG_GUARD_ENABLE_SYNTHETIC_DEMO",
+    "",
+).strip().lower() in {"1", "true", "yes"}
 DATA_POLICY_URL = (
     "https://github.com/yuraira/ecg-guard/blob/main/"
     "DATA_HANDLING_POLICY.md"
@@ -109,6 +114,12 @@ def clear_session_analysis() -> None:
 
 def render_result(report: dict[str, Any], waveform: Any) -> None:
     """Render one result with review reasons and limitations in view."""
+    if report.get("input", {}).get("synthetic"):
+        st.warning(
+            "합성 UI 샘플의 출력입니다. 모델 성능 사례나 임상적으로 유효한 "
+            "ECG 결과로 해석할 수 없습니다.",
+            icon="🧪",
+        )
     action = report["routing"]["action"]
     action_label = ACTION_LABELS_KO[action]
     if action == "auto_result":
@@ -323,12 +334,12 @@ def main() -> None:
 
     with sample_tab:
         st.subheader("사전에 지정한 비식별 공개 샘플")
-        if not DEMO_RECORD_PATH:
+        if not DEMO_RECORD_PATH and not SYNTHETIC_DEMO_ENABLED:
             st.info(
-                "로컬 샘플을 사용하려면 ECG_GUARD_DEMO_RECORD 환경 변수에 "
-                "WFDB 레코드 기본 경로를 설정하세요."
+                "샘플을 사용하려면 ECG_GUARD_DEMO_RECORD 환경 변수에 "
+                "WFDB 레코드 기본 경로를 설정하거나 합성 데모를 활성화하세요."
             )
-        else:
+        elif DEMO_RECORD_PATH:
             sample_path = Path(DEMO_RECORD_PATH)
             st.code(sample_path.name, language="text")
             if st.button(
@@ -349,6 +360,31 @@ def main() -> None:
                             waveform,
                             sample_path.name,
                         )
+                    st.session_state["analysis"] = {
+                        "report": report,
+                        "waveform": waveform,
+                    }
+                except (ValueError, FileNotFoundError, RuntimeError) as error:
+                    st.error(str(error))
+        else:
+            st.info(
+                "이 파형은 화면 동작 확인을 위해 코드로 생성한 합성 신호입니다. "
+                "실제 환자 기록이나 임상적으로 검증된 ECG 예시가 아닙니다."
+            )
+            if st.button(
+                "합성 샘플로 전체 흐름 보기",
+                type="primary",
+                disabled=not checkpoint_ready,
+                width="stretch",
+            ):
+                try:
+                    with st.spinner("합성 샘플을 분석하고 있습니다..."):
+                        waveform = create_synthetic_demo_waveform()
+                        report = analyze_waveform(
+                            waveform,
+                            "synthetic-ui-demo",
+                        )
+                        report["input"]["synthetic"] = True
                     st.session_state["analysis"] = {
                         "report": report,
                         "waveform": waveform,

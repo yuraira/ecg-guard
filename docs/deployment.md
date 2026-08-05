@@ -90,3 +90,45 @@ Docker 빌드는 CPU 실행 환경에 실제 설치된 Python 전이 의존성�
 digest 또는 exact version으로 고정한다. `requirements-container.lock`은 CPU
 배포 이미지에서 검증한 전이 의존성 집합이며, 직접 의존성 변경 시 실제 이미지
 재빌드·테스트·SBOM 추출과 함께 갱신한다.
+
+## Render 공개 데모 구성
+
+저장소 루트의 `render.yaml`은 Singapore 리전의 무료 Docker 웹 서비스를
+선언한다. Render는 `Dockerfile`을 빌드하고 GitHub CI가 통과한 `main` 커밋만
+자동 배포한다. 공개 요청은 Render 로드 밸런서에서 HTTPS로 종료되고 컨테이너는
+이미지 자체 헬스체크와 같은 `PORT=8501`에 `0.0.0.0`으로 바인딩한다. Render는
+해당 포트를 공개 HTTPS 엔드포인트로 전달한다.
+
+체크포인트는 이미지나 저장소에 넣지 않는다. 컨테이너가 시작될 때
+`ecg-guard-fetch-checkpoint`가 공개 `baseline-v1` GitHub Release에서 모델을
+임시 디렉터리로 내려받고 다음 세 조건을 모두 검증한다.
+
+- 응답 및 실제 파일 크기: `23,579,661` bytes
+- 추론 프로토콜에 잠긴 SHA-256:
+  `44a8ecc96f1ac084db2ef6921bf8e438c1130da6be140d7fc3ac7fe3ecfa2ead`
+- 다운로드 상한: 64MiB
+
+다운로드는 같은 디렉터리의 임시 파일에 기록하고 검증에 성공한 뒤에만 원자적으로
+최종 경로로 교체한다. 그다음 웹 런처가 시작 전에 체크포인트 해시를 한 번 더
+검증한다. 다운로드·크기·해시 검증 중 하나라도 실패하면 웹 서버는 열리지 않는다.
+
+무료 인스턴스는 15분 동안 요청이 없으면 종료되고 다음 요청에서 다시 시작될 수
+있다. 파일시스템은 일시적이므로 업로드 및 결과의 영구 저장소로 사용하지 않는다.
+Hobby 워크스페이스의 Render 로그 보유기간은 7일이다. 실제 공개 후에는
+`DATA_HANDLING_POLICY.md`의 예정 환경을 현재 환경으로 전환하고, 발급된 URL과
+검증일을 기록한다.
+
+로컬에서 호스팅 시작 경로를 재현하려면 새 이미지에서 다음 명령을 실행한다.
+
+```powershell
+docker run --rm --read-only --tmpfs /tmp:size=256m,mode=1777 `
+  --publish 127.0.0.1:10000:8501 `
+  --env PORT=8501 `
+  --env ECG_GUARD_CHECKPOINT=/tmp/ecg-guard/best_model.pt `
+  --env ECG_GUARD_VERIFY_CHECKPOINT_AT_STARTUP=1 `
+  ecg-guard:render-smoke `
+  /bin/sh -c 'ecg-guard-fetch-checkpoint --output /tmp/ecg-guard/best_model.pt && exec ecg-guard-web --server.address=0.0.0.0 --server.port="${PORT:-10000}" --server.headless=true'
+```
+
+이 명령은 실제 공개 Release 다운로드, 이중 해시 검증, 읽기 전용 루트
+파일시스템 및 HTTP 헬스체크를 한 번에 검증한다.

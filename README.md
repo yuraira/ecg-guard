@@ -162,8 +162,11 @@ WFDB 레코드여야 하며 `.hea` 또는 `.dat` 확장자는 생략할 수 있�
 결정 경계 불확실성, `auto_result`, `review_uncertain`,
 `review_technical`, `review_both` 중 하나의 검토 라우팅을 함께 제공합니다.
 기술 품질은 자동 입력 폐기 기준이 아니며, uncertainty cutoff 역시 임상적으로
-승인된 운영점이 아닙니다. 체크포인트는 데이터와 같은 이유로 저장소에 포함하지
-않으며 위 학습 명령으로 재현할 수 있습니다.
+승인된 운영점이 아닙니다. 체크포인트는 저장소에 직접 포함하지 않으며 위 학습
+명령으로 재현하거나
+[`baseline-v1` GitHub Release](https://github.com/yuraira/ecg-guard/releases/tag/baseline-v1)에서
+받을 수 있습니다. 공개 파일의 SHA-256은
+`44a8ecc96f1ac084db2ef6921bf8e438c1130da6be140d7fc3ac7fe3ecfa2ead`입니다.
 
 ## 웹 데모
 
@@ -180,17 +183,21 @@ $env:ECG_GUARD_DEMO_RECORD="data/raw/ptb-xl/records100/00000/00001_lr"
 .\.venv\Scripts\ecg-guard-web.exe
 ```
 
-`ECG_GUARD_DEMO_RECORD`는 로컬 시연용 선택 설정입니다. 사용법과 공개 배포 전
-확인사항은 [`docs/web_demo.md`](docs/web_demo.md)에 기록했습니다. 현재
-체크포인트를 공개 배포하지 않았으므로 웹 앱도 로컬 연구 데모 단계입니다.
+`ECG_GUARD_DEMO_RECORD`는 로컬 시연용 선택 설정입니다. 공개 호스트에서는
+실제 환자 데이터가 아닌 합성 UI 샘플로도 전체 흐름을 확인할 수 있습니다.
+합성 결과는 모델 성능 사례나 임상적으로 유효한 ECG 예시가 아닙니다. 사용법과
+공개 배포 확인사항은 [`docs/web_demo.md`](docs/web_demo.md)에 기록했습니다.
+현재 공개 HTTPS 서비스는 Render 계정 연결 전 단계이며 로컬 데모만 실행 중입니다.
 
 동결 체크포인트의 공개 패키지를 만들고 GitHub Release에서 검증하는 절차는
-[`docs/model_release.md`](docs/model_release.md)에 기록했습니다. 실제 Release
-게시 전에는 명세서에 예정 URL을 공개 URL처럼 기재하지 않습니다.
+[`docs/model_release.md`](docs/model_release.md)에 기록했습니다. `baseline-v1`
+Release는 공개 상태이며 인증 없는 다운로드와 체크섬 검증을 완료했습니다.
 
 CPU 전용 Docker 이미지와 로컬 전용 Compose 실행, 컨테이너 SBOM 추출 및
 인터넷 공개 전 조건은 [`docs/deployment.md`](docs/deployment.md)에
 기록했습니다. 기본 포트는 안전하게 `127.0.0.1`에만 바인딩합니다.
+공개 호스팅용 Infrastructure-as-Code는 [`render.yaml`](render.yaml)에 있으며,
+실제 URL이 발급되기 전까지 데이터 처리 정책에는 `배포 예정 환경`으로 구분합니다.
 
 파이프라인만 빠르게 검증할 때는 다음처럼 제한된 표본으로 실행합니다.
 

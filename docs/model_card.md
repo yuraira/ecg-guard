@@ -14,9 +14,10 @@
 ## 배포 상태
 
 체크포인트의 공개 패키지는 모델 카드, 잠긴 추론 프로토콜, 체크섬, SBOM,
-Apache-2.0 라이선스 및 PTB-XL 고지와 함께 GitHub Release로 게시한다.
-게시 전 준비와 검증 절차는 `docs/model_release.md`에 기록한다. 공개 Release가
-생성되기 전에는 저장소의 학습 절차로만 체크포인트를 재현할 수 있다.
+Apache-2.0 라이선스 및 PTB-XL 고지와 함께
+[`baseline-v1` GitHub Release](https://github.com/yuraira/ecg-guard/releases/tag/baseline-v1)에
+게시했다. 인증 없는 다운로드와 SHA-256 검증을 완료했으며 준비·재검증 절차는
+`docs/model_release.md`에 기록한다.
 
 ## 허용된 사용
 

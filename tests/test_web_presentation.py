@@ -10,6 +10,7 @@ from ecg_guard.data.prepare_ptbxl import LEAD_NAMES
 from ecg_guard.web.presentation import (
     create_ecg_figure,
     create_probability_figure,
+    create_synthetic_demo_waveform,
     prediction_table,
     save_uploaded_record,
     validate_upload_set,
@@ -85,6 +86,17 @@ def test_uploaded_record_is_saved_in_target_directory(
     assert header == tmp_path / "sample.hea"
     assert header.read_bytes() == make_header()
     assert (tmp_path / "sample.dat").read_bytes() == b"\x00" * 64
+
+
+def test_synthetic_demo_waveform_is_deterministic_and_finite() -> None:
+    first = create_synthetic_demo_waveform()
+    second = create_synthetic_demo_waveform()
+
+    assert first.shape == (12, 1_000)
+    assert first.dtype == np.float32
+    assert np.isfinite(first).all()
+    assert np.array_equal(first, second)
+    assert not np.array_equal(first[0], first[3])
 
 
 def test_figures_and_table_follow_prediction_contract() -> None:
