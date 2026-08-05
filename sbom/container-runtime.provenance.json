@@ -1,0 +1,51 @@
+{
+  "schema_version": "1.0",
+  "source_repository": "https://github.com/yuraira/ecg-guard",
+  "source_commit": "997fb6b8528d278e7ffe9ac0f9046c484eb93d07",
+  "image": {
+    "tag": "ecg-guard:baseline-v1",
+    "id": "sha256:7b055e6d7b251bd475b8cf153b50cb128ced609369b104dc4daa48d33e7db72e",
+    "local_repo_digest": "ecg-guard@sha256:7b055e6d7b251bd475b8cf153b50cb128ced609369b104dc4daa48d33e7db72e",
+    "size_bytes": 499813172,
+    "created_at": "2026-08-05T05:22:24.03950243Z",
+    "platform": "linux/amd64",
+    "runtime": "Docker Engine 29.6.2",
+    "builder": "Docker Desktop 4.84.0"
+  },
+  "base_image": {
+    "name": "docker.io/library/python:3.12-slim",
+    "digest": "sha256:9e869b0816f5537709825b49e62dc86d1c2691eff19b05c1d4dc3a07992cc052"
+  },
+  "scanner": {
+    "name": "Syft",
+    "version": "1.49.0",
+    "image_digest": "sha256:13b53ebabe3d215268c90cf8fb9b875f0183908245f376fd4b3a2cb69d21d484"
+  },
+  "sbom": {
+    "file": "container-runtime.cdx.json",
+    "format": "CycloneDX",
+    "spec_version": "1.7",
+    "sha256": "b21f45c4af8ef8f22d904802707f379283ed501c3f56dbfb92042a9ee89d44c5",
+    "generated_at": "2026-08-05T05:24:46Z",
+    "component_count": 3079,
+    "python_component_count": 89,
+    "debian_component_count": 88
+  },
+  "runtime_validation": {
+    "health_status": "healthy",
+    "health_endpoint_status": 200,
+    "container_user": "ecgguard",
+    "read_only_root_filesystem": true,
+    "checkpoint_mount_read_only": true,
+    "host_binding": "127.0.0.1:8501",
+    "locked_python_dependencies": 68,
+    "lock_differences": 0,
+    "torch_version": "2.12.1+cpu",
+    "cuda_available": false,
+    "invalid_checkpoint_exit_code": 1
+  },
+  "checkpoint": {
+    "file": "best_model.pt",
+    "sha256": "44a8ecc96f1ac084db2ef6921bf8e438c1130da6be140d7fc3ac7fe3ecfa2ead"
+  }
+}

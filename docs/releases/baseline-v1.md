@@ -8,6 +8,7 @@ ECG Guard의 동결된 residual 1D CNN 기준 모델과 재현성 자료를 공�
 - 모델 카드와 추론 프로토콜
 - 파일별 체크섬과 release manifest
 - 직접 의존성 및 완성 Docker 이미지 CycloneDX SBOM
+- source commit·image ID·검증 결과를 고정한 container provenance
 - 재현 가능하게 생성한 전체 ZIP 패키지
 - Apache-2.0 라이선스와 PTB-XL 제3자 고지
 

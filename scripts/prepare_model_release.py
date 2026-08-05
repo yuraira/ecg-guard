@@ -83,9 +83,72 @@ def source_timestamp(repository: Path) -> int | None:
     return int(value) if value.isdigit() else None
 
 
+def source_contains_commit(repository: Path, commit: str) -> bool | None:
+    """Return whether one commit is an ancestor of the release source."""
+    result = subprocess.run(
+        ["git", "merge-base", "--is-ancestor", commit, "HEAD"],
+        cwd=repository,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if result.returncode == 0:
+        return True
+    if result.returncode == 1:
+        return False
+    return None
+
+
 def iso_timestamp(epoch: int) -> str:
     """Format one Unix timestamp as stable UTC metadata."""
     return datetime.fromtimestamp(epoch, tz=UTC).isoformat()
+
+
+def validate_container_provenance(
+    repository: Path,
+    protocol: dict[str, Any],
+) -> dict[str, Any]:
+    """Cross-check the final image provenance against its SBOM and model."""
+    provenance_path = (
+        repository / "sbom" / "container-runtime.provenance.json"
+    )
+    sbom_path = repository / "sbom" / "container-runtime.cdx.json"
+    provenance = json.loads(provenance_path.read_text(encoding="utf-8"))
+    sbom = json.loads(sbom_path.read_text(encoding="utf-8"))
+
+    expected_sbom_hash = str(provenance["sbom"]["sha256"]).lower()
+    if sha256_file(sbom_path) != expected_sbom_hash:
+        raise ValueError("container SBOM hash does not match provenance")
+    if sbom.get("bomFormat") != provenance["sbom"]["format"]:
+        raise ValueError("container SBOM format does not match provenance")
+    if sbom.get("specVersion") != provenance["sbom"]["spec_version"]:
+        raise ValueError("container SBOM version does not match provenance")
+
+    components = list(sbom.get("components", ()))
+    python_components = [
+        component
+        for component in components
+        if str(component.get("purl", "")).startswith("pkg:pypi/")
+    ]
+    debian_components = [
+        component
+        for component in components
+        if str(component.get("purl", "")).startswith("pkg:deb/debian/")
+    ]
+    counts = {
+        "component_count": len(components),
+        "python_component_count": len(python_components),
+        "debian_component_count": len(debian_components),
+    }
+    for name, actual in counts.items():
+        if actual != int(provenance["sbom"][name]):
+            raise ValueError(f"container SBOM {name} does not match provenance")
+
+    expected_checkpoint = str(protocol["checkpoint_sha256"]).lower()
+    recorded_checkpoint = str(provenance["checkpoint"]["sha256"]).lower()
+    if recorded_checkpoint != expected_checkpoint:
+        raise ValueError("container provenance checkpoint hash is not locked")
+    return provenance
 
 
 def validate_checkpoint(
@@ -167,6 +230,16 @@ def build_release_package(
     )
     protocol = json.loads(protocol_path.read_text(encoding="utf-8"))
     checkpoint_summary = validate_checkpoint(checkpoint_path, protocol)
+    container_provenance = validate_container_provenance(
+        repository,
+        protocol,
+    )
+    image_source_commit = str(container_provenance["source_commit"])
+    if source_contains_commit(repository, image_source_commit) is not True:
+        raise RuntimeError(
+            "container image source commit is not an ancestor of the "
+            "release source"
+        )
 
     if output_directory.exists() and any(output_directory.iterdir()):
         raise FileExistsError(
@@ -186,6 +259,8 @@ def build_release_package(
         / "direct-dependencies.cdx.json",
         repository / "sbom" / "container-runtime.cdx.json": output_directory
         / "container-runtime.cdx.json",
+        repository / "sbom" / "container-runtime.provenance.json": output_directory
+        / "container-runtime.provenance.json",
     }
     for source, destination in assets.items():
         copy_asset(source, destination)
@@ -233,6 +308,8 @@ documented in `THIRD_PARTY_NOTICES.md`; the PTB-XL source data is not included.
         "source_commit": source_commit(repository),
         "source_dirty": dirty,
         "checkpoint": checkpoint_summary,
+        "container_image": container_provenance["image"],
+        "container_sbom": container_provenance["sbom"],
         "license": "Apache-2.0",
         "third_party_dataset": {
             "name": "PTB-XL",

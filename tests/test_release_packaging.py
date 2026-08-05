@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import hashlib
+import json
 from pathlib import Path
 
 import pytest
@@ -11,6 +12,7 @@ from scripts.prepare_model_release import (
     build_release_archive,
     sha256_file,
     validate_checkpoint,
+    validate_container_provenance,
 )
 
 
@@ -85,3 +87,46 @@ def test_release_zip_is_deterministic(tmp_path: Path) -> None:
     assert hashlib.sha256(first.read_bytes()).digest() == hashlib.sha256(
         second.read_bytes()
     ).digest()
+
+
+def test_validate_container_provenance_cross_checks_sbom(
+    tmp_path: Path,
+) -> None:
+    sbom_directory = tmp_path / "sbom"
+    sbom_directory.mkdir()
+    sbom_path = sbom_directory / "container-runtime.cdx.json"
+    sbom = {
+        "bomFormat": "CycloneDX",
+        "specVersion": "1.7",
+        "components": [
+            {"name": "library", "purl": "pkg:pypi/library@1.0"},
+            {"name": "libc", "purl": "pkg:deb/debian/libc@1.0"},
+        ],
+    }
+    sbom_path.write_text(
+        json.dumps(sbom),
+        encoding="utf-8",
+    )
+    provenance = {
+        "source_commit": "0" * 40,
+        "sbom": {
+            "format": "CycloneDX",
+            "spec_version": "1.7",
+            "sha256": sha256_file(sbom_path),
+            "component_count": 2,
+            "python_component_count": 1,
+            "debian_component_count": 1,
+        },
+        "checkpoint": {"sha256": "1" * 64},
+    }
+    (sbom_directory / "container-runtime.provenance.json").write_text(
+        json.dumps(provenance),
+        encoding="utf-8",
+    )
+
+    result = validate_container_provenance(
+        tmp_path,
+        {"checkpoint_sha256": "1" * 64},
+    )
+
+    assert result["sbom"]["component_count"] == 2

@@ -27,6 +27,7 @@ dist/ecg-guard-baseline-v1
 ├─ SHA256SUMS.txt
 ├─ direct-dependencies.cdx.json
 ├─ container-runtime.cdx.json
+├─ container-runtime.provenance.json
 ├─ LICENSE
 └─ THIRD_PARTY_NOTICES.md
 ```

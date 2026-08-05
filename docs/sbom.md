@@ -60,3 +60,8 @@ Debian 패키지가 모두 있는지 검증한다. Docker image ID, Syft image d
 SBOM SHA-256은 별도의 로컬 provenance 파일에 남긴다. Python 전이 버전은
 `requirements-container.lock`에도 고정해 SBOM이 단순한 사후 목록에 그치지
 않도록 한다.
+
+검증을 통과한 Release 후보의 source commit, image ID, base image와 Syft
+digest, SBOM 해시 및 헬스체크 결과는
+`sbom/container-runtime.provenance.json`에 고정한다. `.local.json` 파일은
+매 실행 진단용이고, 확정된 provenance JSON만 모델 Release에 포함한다.
