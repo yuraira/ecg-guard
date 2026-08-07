@@ -65,3 +65,19 @@ SBOM SHA-256은 별도의 로컬 provenance 파일에 남긴다. Python 전이 �
 digest, SBOM 해시 및 헬스체크 결과는
 `sbom/container-runtime.provenance.json`에 고정한다. `.local.json` 파일은
 매 실행 진단용이고, 확정된 provenance JSON만 모델 Release에 포함한다.
+
+## 모델 Release와 현재 배포 이미지의 버전 경계
+
+`baseline-v1` GitHub Release의 SBOM·provenance·ZIP은 태그
+`1468ccaa6d3f819660d342a67589efdfb4e79109`에서 함께 생성한 불변 모델 패키지다.
+Release manifest와 `SHA256SUMS.txt`가 서로 참조하므로 이후 배포 코드 변경을
+이 자산에 덮어쓰지 않는다.
+
+현재 `main`의 컨테이너 SBOM은 시작 명령 호환 처리를 포함한 이미지
+`sha256:ab12498081fb17c4776c4b594d03c20a38518bcd4f37b8c45833601718e4965d`에서
+다시 추출했으며 SHA-256은
+`0147de1208c851afc3f8779161c00328127d17c93de5ce01bd0eee067852ea0a`다.
+모델 가중치 SHA-256은 두 버전 모두
+`44a8ecc96f1ac084db2ef6921bf8e438c1130da6be140d7fc3ac7fe3ecfa2ead`로
+동일하다. 모델 Release 자체를 재현할 때는 Release 자산을, 현재 배포 이미지의
+공급망을 검토할 때는 `main`의 SBOM과 provenance를 사용한다.
