@@ -187,7 +187,8 @@ $env:ECG_GUARD_DEMO_RECORD="data/raw/ptb-xl/records100/00000/00001_lr"
 실제 환자 데이터가 아닌 합성 UI 샘플로도 전체 흐름을 확인할 수 있습니다.
 합성 결과는 모델 성능 사례나 임상적으로 유효한 ECG 예시가 아닙니다. 사용법과
 공개 배포 확인사항은 [`docs/web_demo.md`](docs/web_demo.md)에 기록했습니다.
-현재 공개 HTTPS 서비스는 Render 계정 연결 전 단계이며 로컬 데모만 실행 중입니다.
+Render 주소 `https://ecg-guard.onrender.com`는 할당되었고 HTTP→HTTPS 전환은
+확인했지만 HTTPS 헬스체크가 아직 응답하지 않아 로컬 데모만 사용 중입니다.
 
 동결 체크포인트의 공개 패키지를 만들고 GitHub Release에서 검증하는 절차는
 [`docs/model_release.md`](docs/model_release.md)에 기록했습니다. `baseline-v1`
@@ -197,7 +198,8 @@ CPU 전용 Docker 이미지와 로컬 전용 Compose 실행, 컨테이너 SBOM �
 인터넷 공개 전 조건은 [`docs/deployment.md`](docs/deployment.md)에
 기록했습니다. 기본 포트는 안전하게 `127.0.0.1`에만 바인딩합니다.
 공개 호스팅용 Infrastructure-as-Code는 [`render.yaml`](render.yaml)에 있으며,
-실제 URL이 발급되기 전까지 데이터 처리 정책에는 `배포 예정 환경`으로 구분합니다.
+실제 URL의 HTTPS 헬스체크와 전체 기능 검증이 끝나기 전까지 데이터 처리 정책에는
+`배포 예정 환경`으로 구분합니다.
 
 파이프라인만 빠르게 검증할 때는 다음처럼 제한된 표본으로 실행합니다.
 
