@@ -224,6 +224,7 @@ __marimo__/
 /models/
 /checkpoints/
 /outputs/
+/deliverables/
 *.pt
 *.pth
 

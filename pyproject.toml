@@ -31,6 +31,7 @@ Issues = "https://github.com/yuraira/ecg-guard/issues"
 ecg-guard-predict = "ecg_guard.inference.predict_record:main"
 ecg-guard-web = "ecg_guard.web.launcher:main"
 ecg-guard-fetch-checkpoint = "ecg_guard.resources.fetch_checkpoint:main"
+ecg-guard-container-entrypoint = "ecg_guard.web.container_entrypoint:main"
 
 [project.optional-dependencies]
 dev = [
