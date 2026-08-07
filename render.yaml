@@ -11,9 +11,9 @@ services:
     dockerfilePath: ./Dockerfile
     dockerContext: .
     dockerCommand: >-
-      /bin/sh -c 'ecg-guard-fetch-checkpoint --output /tmp/ecg-guard/best_model.pt
+      ecg-guard-fetch-checkpoint --output /tmp/ecg-guard/best_model.pt
       && exec ecg-guard-web --server.address=0.0.0.0
-      --server.port="${PORT:-10000}" --server.headless=true'
+      --server.port=${PORT:-10000} --server.headless=true
     envVars:
       - key: PORT
         value: "8501"
