@@ -93,6 +93,15 @@ digest 또는 exact version으로 고정한다. `requirements-container.lock`은
 
 ## Render 공개 데모 구성
 
+### 현재 운영 상태 (2026-08-10)
+
+`https://ecg-guard.onrender.com` 주소와 HTTP→HTTPS 전환은 확인했지만 HTTPS 루트와
+헬스체크는 응답하지 않는다. 애플리케이션 변경 커밋 `6ed386e`와 최종 SBOM 커밋
+`9637efa`의 GitHub CI는 모두 성공했고, 동일 시작 경로를 적용한 최종 이미지는
+공개 체크포인트 검증 다운로드와 HTTP 200 헬스체크를 통과했다. 따라서 현재 주소는
+운영 서비스로 안내하지 않으며, 인증된 Render 대시보드에서 Blueprint를 수동
+동기화한 뒤 외부 기능 검증을 완료해야 한다.
+
 저장소 루트의 `render.yaml`은 Singapore 리전의 무료 Docker 웹 서비스를
 선언한다. Render는 `Dockerfile`을 빌드하고 GitHub CI가 통과한 `main` 커밋만
 자동 배포한다. 공개 요청은 Render 로드 밸런서에서 HTTPS로 종료되고 컨테이너는

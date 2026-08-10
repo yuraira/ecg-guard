@@ -188,7 +188,8 @@ $env:ECG_GUARD_DEMO_RECORD="data/raw/ptb-xl/records100/00000/00001_lr"
 합성 결과는 모델 성능 사례나 임상적으로 유효한 ECG 예시가 아닙니다. 사용법과
 공개 배포 확인사항은 [`docs/web_demo.md`](docs/web_demo.md)에 기록했습니다.
 Render 주소 `https://ecg-guard.onrender.com`는 할당되었고 HTTP→HTTPS 전환은
-확인했지만 HTTPS 헬스체크가 아직 응답하지 않아 로컬 데모만 사용 중입니다.
+확인했습니다. 다만 2026-08-10 최종 CI 이후에도 HTTPS 헬스체크가 응답하지 않아
+대시보드 수동 동기화 전까지는 로컬 데모만 사용합니다.
 
 동결 체크포인트의 공개 패키지를 만들고 GitHub Release에서 검증하는 절차는
 [`docs/model_release.md`](docs/model_release.md)에 기록했습니다. `baseline-v1`
