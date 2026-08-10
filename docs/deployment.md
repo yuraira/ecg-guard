@@ -99,9 +99,10 @@ digest 또는 exact version으로 고정한다. `requirements-container.lock`은
 이미지 자체 헬스체크와 같은 `PORT=8501`에 `0.0.0.0`으로 바인딩한다. Render는
 해당 포트를 공개 HTTPS 엔드포인트로 전달한다.
 
-체크포인트는 이미지나 저장소에 넣지 않는다. 컨테이너가 시작될 때
-`ecg-guard-fetch-checkpoint`가 공개 `baseline-v1` GitHub Release에서 모델을
-임시 디렉터리로 내려받고 다음 세 조건을 모두 검증한다.
+체크포인트는 이미지나 저장소에 넣지 않는다. Render에서는
+`ECG_GUARD_FETCH_CHECKPOINT_AT_STARTUP=1`을 설정한다. 컨테이너 진입점은
+Docker의 기본 `CMD`를 실행하기 전에 공개 `baseline-v1` GitHub Release에서
+모델을 임시 디렉터리로 내려받고 다음 세 조건을 모두 검증한다.
 
 - 응답 및 실제 파일 크기: `23,579,661` bytes
 - 추론 프로토콜에 잠긴 SHA-256:
@@ -125,16 +126,16 @@ docker run --rm --read-only --tmpfs /tmp:size=256m,mode=1777 `
   --publish 127.0.0.1:10000:8501 `
   --env PORT=8501 `
   --env ECG_GUARD_CHECKPOINT=/tmp/ecg-guard/best_model.pt `
+  --env ECG_GUARD_FETCH_CHECKPOINT_AT_STARTUP=1 `
   --env ECG_GUARD_VERIFY_CHECKPOINT_AT_STARTUP=1 `
-  ecg-guard:render-smoke `
-  /bin/sh -c 'ecg-guard-fetch-checkpoint --output /tmp/ecg-guard/best_model.pt && exec ecg-guard-web --server.address=0.0.0.0 --server.port="${PORT:-10000}" --server.headless=true'
+  ecg-guard:render-smoke
 ```
 
 이 명령은 실제 공개 Release 다운로드, 이중 해시 검증, 읽기 전용 루트
 파일시스템 및 HTTP 헬스체크를 한 번에 검증한다.
 
-컨테이너의 `ecg-guard-container-entrypoint`는 정상 Docker 명령을 그대로
-실행한다. 호스팅 플랫폼이 셸 명령 바깥의 따옴표를 보존한 경우에만 일치하는
-따옴표 한 쌍을 제거하여 전체 명령이 하나의 실행 파일명으로 해석되는
-`status 127` 실패를 방지한다. 이 호환 처리는 체크포인트의 크기·SHA-256
-검증이나 웹 런처의 시작 검증을 우회하지 않는다.
+`render.yaml`은 별도의 `dockerCommand`를 지정하지 않고 이미지의 exec-form
+`CMD`를 사용한다. 따라서 체크포인트 준비와 웹 실행을 셸의 따옴표·연산자 파싱에
+의존하지 않는다. `ecg-guard-container-entrypoint`는 과거 Render 설정에 남은
+셸 명령도 호환 처리하지만, 이 경로 역시 체크포인트의 크기·SHA-256 검증이나
+웹 런처의 시작 검증을 우회하지 않는다.

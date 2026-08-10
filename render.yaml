@@ -10,15 +10,13 @@ services:
     healthCheckPath: /_stcore/health
     dockerfilePath: ./Dockerfile
     dockerContext: .
-    dockerCommand: >-
-      ecg-guard-fetch-checkpoint --output /tmp/ecg-guard/best_model.pt
-      && exec ecg-guard-web --server.address=0.0.0.0
-      --server.port=${PORT:-10000} --server.headless=true
     envVars:
       - key: PORT
         value: "8501"
       - key: ECG_GUARD_CHECKPOINT
         value: /tmp/ecg-guard/best_model.pt
+      - key: ECG_GUARD_FETCH_CHECKPOINT_AT_STARTUP
+        value: "1"
       - key: ECG_GUARD_DEVICE
         value: cpu
       - key: ECG_GUARD_VERIFY_CHECKPOINT_AT_STARTUP

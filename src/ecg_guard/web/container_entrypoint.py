@@ -5,6 +5,10 @@ from __future__ import annotations
 import os
 import sys
 from collections.abc import Sequence
+from pathlib import Path
+from typing import Mapping
+
+from ecg_guard.resources.fetch_checkpoint import download_checkpoint
 
 
 DEFAULT_COMMAND = [
@@ -13,6 +17,8 @@ DEFAULT_COMMAND = [
     "--server.port=8501",
     "--server.headless=true",
 ]
+TRUE_VALUES = {"1", "true", "yes", "on"}
+SHELL_OPERATORS = {"&&", "||", ";"}
 
 
 def _strip_matching_outer_quotes(value: str) -> str:
@@ -45,11 +51,34 @@ def normalize_command(arguments: Sequence[str]) -> list[str]:
         for shell_prefix in ("/bin/sh -c ", "sh -c "):
             if single.startswith(shell_prefix):
                 return ["/bin/sh", "-c", _strip_matching_outer_quotes(single[len(shell_prefix) :])]
+        if any(operator in single for operator in SHELL_OPERATORS):
+            return ["/bin/sh", "-c", single]
+
+    if any(argument in SHELL_OPERATORS for argument in command):
+        return ["/bin/sh", "-c", " ".join(command)]
 
     return command
 
 
+def prepare_checkpoint(environment: Mapping[str, str] = os.environ) -> Path | None:
+    """Fetch the locked public checkpoint when ephemeral hosting requests it."""
+    enabled = environment.get("ECG_GUARD_FETCH_CHECKPOINT_AT_STARTUP", "")
+    if enabled.strip().lower() not in TRUE_VALUES:
+        return None
+
+    configured_path = environment.get("ECG_GUARD_CHECKPOINT", "").strip()
+    if not configured_path:
+        raise RuntimeError(
+            "ECG_GUARD_CHECKPOINT is required when startup fetching is enabled"
+        )
+
+    destination = download_checkpoint(Path(configured_path))
+    print(f"verified baseline checkpoint ready: {destination}", flush=True)
+    return destination
+
+
 def main() -> None:
+    prepare_checkpoint()
     command = normalize_command(sys.argv[1:])
     os.execvp(command[0], command)
 
