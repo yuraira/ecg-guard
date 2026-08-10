@@ -1,13 +1,13 @@
 {
   "schema_version": "1.0",
   "source_repository": "https://github.com/yuraira/ecg-guard",
-  "source_commit": "96a5edae05df852f59184939bbcfe283d0382414",
+  "source_commit": "6ed386e24a87728344f2f387586c9b5292e23ff7",
   "image": {
     "tag": "ecg-guard:baseline-v1",
-    "id": "sha256:ab12498081fb17c4776c4b594d03c20a38518bcd4f37b8c45833601718e4965d",
-    "local_repo_digest": "ecg-guard@sha256:ab12498081fb17c4776c4b594d03c20a38518bcd4f37b8c45833601718e4965d",
-    "size_bytes": 499842572,
-    "created_at": "2026-08-07T09:58:52.20330491Z",
+    "id": "sha256:110ead502269e264286f90e276212b8a83f388903bfbaa0eb5e0982f84b592a3",
+    "local_repo_digest": "ecg-guard@sha256:110ead502269e264286f90e276212b8a83f388903bfbaa0eb5e0982f84b592a3",
+    "size_bytes": 499845700,
+    "created_at": "2026-08-10T01:11:57.744153081Z",
     "platform": "linux/amd64",
     "runtime": "Docker Engine 29.6.2",
     "builder": "Docker Desktop 4.84.0"
@@ -25,8 +25,8 @@
     "file": "container-runtime.cdx.json",
     "format": "CycloneDX",
     "spec_version": "1.7",
-    "sha256": "0147de1208c851afc3f8779161c00328127d17c93de5ce01bd0eee067852ea0a",
-    "generated_at": "2026-08-07T10:01:11Z",
+    "sha256": "43cc83f8399271bcc34d82975fecdf7e199f95d7e946fe451764b722abd3abf4",
+    "generated_at": "2026-08-10T01:14:38Z",
     "component_count": 3079,
     "python_component_count": 89,
     "debian_component_count": 88
@@ -37,7 +37,7 @@
     "container_user": "ecgguard",
     "read_only_root_filesystem": true,
     "checkpoint_delivery": "anonymous GitHub Release HTTPS download to tmpfs",
-    "host_binding": "127.0.0.1:18505 -> container port 8501",
+    "host_binding": "127.0.0.1:18508 -> container port 8501",
     "memory_limit_bytes": 536870912,
     "cpu_limit": 0.1,
     "locked_python_dependencies": 68,
@@ -46,9 +46,11 @@
     "cuda_available": false,
     "invalid_checkpoint_exit_code": 1,
     "synthetic_demo_app_test_exceptions": 0,
+    "render_default_command": "healthy",
+    "startup_checkpoint_fetch": "verified",
     "legacy_quoted_render_command": "healthy",
-    "repository_tests_passed": 57,
-    "github_ci_run": "https://github.com/yuraira/ecg-guard/actions/runs/31167889666"
+    "repository_tests_passed": 66,
+    "github_ci_run": "https://github.com/yuraira/ecg-guard/actions/runs/31346367563"
   },
   "checkpoint": {
     "file": "best_model.pt",
