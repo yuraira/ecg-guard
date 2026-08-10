@@ -95,12 +95,12 @@ digest 또는 exact version으로 고정한다. `requirements-container.lock`은
 
 ### 현재 운영 상태 (2026-08-10)
 
-`https://ecg-guard.onrender.com` 주소와 HTTP→HTTPS 전환은 확인했지만 HTTPS 루트와
-헬스체크는 응답하지 않는다. 애플리케이션 변경 커밋 `6ed386e`와 최종 SBOM 커밋
-`9637efa`의 GitHub CI는 모두 성공했고, 동일 시작 경로를 적용한 최종 이미지는
-공개 체크포인트 검증 다운로드와 HTTP 200 헬스체크를 통과했다. 따라서 현재 주소는
-운영 서비스로 안내하지 않으며, 인증된 Render 대시보드에서 Blueprint를 수동
-동기화한 뒤 외부 기능 검증을 완료해야 한다.
+`https://ecg-guard.onrender.com`은 Singapore 리전의 Free Web Service로 운영한다.
+최초 공개 검증 배포는 커밋 `4e83474`이며, Render 로그에서 고정 체크포인트 준비,
+`0.0.0.0:8501` 서버 기동과 live 전환을 확인했다. 외부에서는 HTTP→HTTPS 301,
+HTTPS 루트와 `/_stcore/health`의 HTTP 200 응답을 확인했다. 실제 브라우저에서
+합성 ECG 분석, 예측 확률, 12유도 파형, 품질·출처, 결과 삭제와 잘못된 WFDB
+헤더의 사용자 오류 표시를 검증했으며 브라우저 오류 로그는 발생하지 않았다.
 
 저장소 루트의 `render.yaml`은 Singapore 리전의 무료 Docker 웹 서비스를
 선언한다. Render는 `Dockerfile`을 빌드하고 GitHub CI가 통과한 `main` 커밋만
@@ -124,9 +124,9 @@ Docker의 기본 `CMD`를 실행하기 전에 공개 `baseline-v1` GitHub Releas
 
 무료 인스턴스는 15분 동안 요청이 없으면 종료되고 다음 요청에서 다시 시작될 수
 있다. 파일시스템은 일시적이므로 업로드 및 결과의 영구 저장소로 사용하지 않는다.
-Hobby 워크스페이스의 Render 로그 보유기간은 7일이다. 실제 공개 후에는
-`DATA_HANDLING_POLICY.md`의 예정 환경을 현재 환경으로 전환하고, 발급된 URL과
-검증일을 기록한다.
+Hobby 워크스페이스의 Render 로그 보유기간은 7일이다. 현재 사업자·리전·URL,
+로그 항목과 보유 기간, 임시 파일·세션 삭제 및 국외 처리 범위는
+`DATA_HANDLING_POLICY.md`에 기록한다.
 
 로컬에서 호스팅 시작 경로를 재현하려면 새 이미지에서 다음 명령을 실행한다.
 

@@ -17,7 +17,9 @@
 Apache-2.0 라이선스 및 PTB-XL 고지와 함께
 [`baseline-v1` GitHub Release](https://github.com/yuraira/ecg-guard/releases/tag/baseline-v1)에
 게시했다. 인증 없는 다운로드와 SHA-256 검증을 완료했으며 준비·재검증 절차는
-`docs/model_release.md`에 기록한다.
+`docs/model_release.md`에 기록한다. 연구·교육용 공개 데모는
+`https://ecg-guard.onrender.com`에서 운영하며, 2026-08-10 HTTPS 헬스체크와
+합성 ECG 분석·품질 및 출처 표시·세션 삭제·잘못된 입력 오류 처리를 확인했다.
 
 ## 허용된 사용
 
